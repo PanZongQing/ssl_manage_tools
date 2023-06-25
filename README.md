@@ -5,12 +5,12 @@
 
 ### 目录结构
 
-configpath: 本地存放远程服务器拉去下来的nginx配置文件
-core: 核心功能，目录检查和ssh方法
-server: 后台服务
-server/api: 接口方法，包括编辑文档和上传下载功能
-templates: 前端模板
-uploadier: 上传文件保存路径
+configpath: 本地存放远程服务器拉去下来的nginx配置文件  
+core: 核心功能，目录检查和ssh方法  
+server: 后台服务  
+server/api: 接口方法，包括编辑文档和上传下载功能  
+templates: 前端模板  
+uploadier: 上传文件保存路径  
 
 
 
