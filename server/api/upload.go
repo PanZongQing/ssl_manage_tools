@@ -19,7 +19,7 @@ func CopyFileToRemote(ipaddr, username, password string, filename string) error 
 	defer scpClient.Close()
 
 	localpath := "./uploaddir/" + filename
-	sourcepath := "/opt/" + filename
+	sourcepath := "/etc/nginx/conf.d/" + filename
 
 	err = scpClient.CopyFileToRemote(localpath, sourcepath, &scp.FileTransferOption{
 		Perm: 0644,

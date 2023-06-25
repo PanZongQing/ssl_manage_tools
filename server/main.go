@@ -22,7 +22,8 @@ func main() {
 	router.MaxMultipartMemory = 8 << 20
 	router.POST("/upload", func(c *gin.Context) {
 		form, _ := c.MultipartForm()
-		host := c.PostForm("host") + ":22"
+		port := c.PostForm("port")
+		host := c.PostForm("host")
 		username := c.PostForm("username")
 		passwd := c.PostForm("password")
 		files := form.File["files"]
@@ -32,8 +33,6 @@ func main() {
 		if err != nil {
 			fmt.Println("忽略错误")
 		}
-
-		//读取nginx文件并修改相应的内容
 
 		//将nginx配置文件和ssl证书文件都上传到指定目录
 
@@ -53,12 +52,13 @@ func main() {
 			}
 		}
 		//使用命令更新nginx配置
-		pers1.SshHost = "192.168.56.210"
+		pers1.SshHost = host
 		pers1.SshUser = username
 		pers1.SshPassword = passwd
-		//pers1.SshType = "password"
-		pers1.SshPort = 22
+		pers1.SshType = "password"
+		pers1.SshPort = port
 		core.NewSSH(&pers1)
+
 		c.String(http.StatusOK, fmt.Sprintf("%d files uploaded", len(files)))
 
 	})

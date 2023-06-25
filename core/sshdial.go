@@ -13,7 +13,7 @@ type Config struct {
 	SshUser     string
 	SshPassword string
 	SshType     string
-	SshPort     int
+	SshPort     string
 }
 
 func NewSSH(c *Config) {
@@ -26,23 +26,23 @@ func NewSSH(c *Config) {
 		config.Auth = []ssh.AuthMethod{ssh.Password(c.SshPassword)}
 	}
 
-	addr := fmt.Sprintf("%s:%d", c.SshHost, c.SshPort)
+	addr := fmt.Sprintf("%s:%s", c.SshHost, c.SshPort)
 	sshClient, err := ssh.Dial("tcp", addr, config)
 	if err != nil {
-		log.Fatal("创建ssh client失败", err)
+		fmt.Println("创建ssh client失败", err)
 	}
 	defer sshClient.Close()
 
 	session, err := sshClient.NewSession()
 	if err != nil {
-		log.Fatal("创建session失败", err)
+		fmt.Println("创建session失败", err)
 	}
 	defer session.Close()
 
-	combo, err := session.CombinedOutput("nginx -t;nginx -s reload")
+	combo, err := session.CombinedOutput("sudo nginx -t && sudo nginx -s reload")
 	if err != nil {
-		log.Fatal("远程执行cmd失败", err)
+		fmt.Println("远程执行cmd失败", err)
+
 	}
 	log.Println("命令输出", string(combo))
-
 }
