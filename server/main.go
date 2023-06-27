@@ -13,7 +13,7 @@ import (
 var pers1 core.Config
 
 func main() {
-
+	var host, port string
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/*")
 	router.GET("/upload", func(c *gin.Context) {
@@ -22,20 +22,35 @@ func main() {
 	router.MaxMultipartMemory = 8 << 20
 	router.POST("/upload", func(c *gin.Context) {
 		form, _ := c.MultipartForm()
-		port := c.PostForm("port")
-		host := c.PostForm("host")
+		domainvalue := c.PostForm("domain")
+		//port := c.PostForm("port")
+		//host := c.PostForm("host")
 		username := c.PostForm("username")
 		passwd := c.PostForm("password")
 		files := form.File["files"]
-
+		fmt.Println(domainvalue)
 		//先将nginx配置文件下载到本地目录
-		err := api.CopyRemoteToLocal(host, username, passwd)
-		if err != nil {
-			fmt.Println("忽略错误")
-		}
+		//err := api.CopyRemoteToLocal(host, username, passwd)
+		//if err != nil {
+		//	fmt.Println("忽略错误")
+		//}
 
 		//将nginx配置文件和ssl证书文件都上传到指定目录
+		switch domainvalue {
+		case "www.polixir.site":
+			host = "192.168.56.210"
+			port = "22"
+		case "www.polixir.ai":
+			host = "192.168.56.210"
+			port = "22"
+		case "www.agit.ai":
+			host = "192.168.56.210"
+			port = "22"
+		default:
+			fmt.Println("就这样了")
 
+		}
+		fmt.Println(host)
 		for _, file := range files {
 			log.Println(file.Filename)
 			dst := "./uploaddir/" + file.Filename
