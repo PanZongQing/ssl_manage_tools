@@ -22,34 +22,41 @@ func main() {
 	router.MaxMultipartMemory = 8 << 20
 	router.POST("/upload", func(c *gin.Context) {
 		form, _ := c.MultipartForm()
-		domainvalue := c.PostForm("domain")
-		//port := c.PostForm("port")
-		//host := c.PostForm("host")
+		Auto_domain := c.PostForm("domain")
+		manual_domian := c.PostForm("manual_domain")
+		port := c.PostForm("port")
+		host := c.PostForm("host")
 		username := c.PostForm("username")
 		passwd := c.PostForm("password")
 		files := form.File["files"]
-		fmt.Println(domainvalue)
-		//先将nginx配置文件下载到本地目录
-		//err := api.CopyRemoteToLocal(host, username, passwd)
-		//if err != nil {
-		//	fmt.Println("忽略错误")
-		//}
+		fmt.Println(Auto_domain)
 
-		//将nginx配置文件和ssl证书文件都上传到指定目录
-		switch domainvalue {
-		case "www.polixir.site":
-			host = "192.168.56.210"
-			port = "22"
-		case "www.polixir.ai":
-			host = "192.168.56.210"
-			port = "22"
-		case "www.agit.ai":
-			host = "192.168.56.210"
-			port = "22"
-		default:
-			fmt.Println("就这样了")
+		//判断是用户填写的文件名还是选择的域名
+		if manual_domian == " " {
+			switch Auto_domain {
+			case "www.polixir.site":
+				host = "192.168.56.210"
+				port = "22"
+			case "www.polixir.ai":
+				host = "192.168.56.210"
+				port = "22"
+			case "www.agit.ai":
+				host = "192.168.56.210"
+				port = "22"
+			default:
+				fmt.Println("就这样了")
+
+			}
+		} else {
+			for _, file1 := range files {
+				name := file1.Filename
+				api.RenameFile(name, manual_domian)
+			}
 
 		}
+
+		//将ssl证书文件都上传到指定目录
+
 		fmt.Println(host)
 		for _, file := range files {
 			log.Println(file.Filename)
