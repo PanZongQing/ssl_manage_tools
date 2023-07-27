@@ -13,7 +13,7 @@ import (
 var pers1 core.Config
 
 func main() {
-	var host, port string
+	// var host, port string
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/*")
 	router.GET("/upload", func(c *gin.Context) {
@@ -32,7 +32,7 @@ func main() {
 		fmt.Println(Auto_domain)
 
 		//判断是用户填写的文件名还是选择的域名
-		if manual_domian == " " {
+		if manual_domian == "" {
 			switch Auto_domain {
 			case "www.polixir.site":
 				host = "192.168.56.210"
@@ -43,21 +43,19 @@ func main() {
 			case "www.agit.ai":
 				host = "192.168.56.210"
 				port = "22"
+			case "service.agit.site":
+				host = "106.75.182.54"
+				port = "122"
 			default:
 				fmt.Println("就这样了")
 
 			}
 		} else {
-			for _, file1 := range files {
-				name := file1.Filename
-				api.RenameFile(name, manual_domian)
-			}
-
+			fmt.Println("程序出错了")
+			return
 		}
+		fmt.Println(host, port)
 
-		//将ssl证书文件都上传到指定目录
-
-		fmt.Println(host)
 		for _, file := range files {
 			log.Println(file.Filename)
 			dst := "./uploaddir/" + file.Filename

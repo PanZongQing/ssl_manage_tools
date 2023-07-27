@@ -1,6 +1,9 @@
 package api
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 func RenameFile(filename1, filename2 string) {
 	oldpath := "./uploaddir/" + filename1
@@ -9,4 +12,5 @@ func RenameFile(filename1, filename2 string) {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("修改文件名成功")
 }
