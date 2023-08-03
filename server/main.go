@@ -16,11 +16,11 @@ func main() {
 	// var host, port string
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/*")
-	router.GET("/upload", func(c *gin.Context) {
+	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "upload.html", gin.H{})
 	})
 	router.MaxMultipartMemory = 8 << 20
-	router.POST("/upload", func(c *gin.Context) {
+	router.POST("/", func(c *gin.Context) {
 		form, _ := c.MultipartForm()
 		Auto_domain := c.PostForm("domain")
 		manual_domian := c.PostForm("manual_domain")
